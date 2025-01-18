@@ -1,0 +1,130 @@
+package pc;
+
+import java.util.Scanner;
+import java.util.Random ;
+
+public class ia {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        char[][] tablero = {{' ' , ' ', ' '} ,{ ' ',' ', ' '} , {' ', ' ' ,' '}} ;
+        char jugadorHumano = 'X';
+        char jugadorMaquina = '0';
+        boolean juegoTerminado = false;
+        boolean salir = false ;
+
+    while (!juegoTerminado) {
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.print(tablero[i][j]);
+                if (j < 2) System.out.print(" | ");
+            }
+            System.out.println();
+            if (i < 2) System.out.println("--+---+--");
+        }
+        System.out.println();
+
+        // Turno del jugador
+        System.out.println("Turno del jugador " + jugadorHumano);
+        System.out.print("Elige una casilla entre 1 y 9: ");
+        int eleccion = scanner.nextInt() - 1;
+
+        int fila = eleccion / 3; // el entero es igual a la fila
+        int columna = eleccion % 3; // el residuo es igual a la columna
+
+        if (eleccion >= 0 && eleccion < 9 && tablero[fila][columna] == ' ') {
+            tablero[fila][columna] = jugadorHumano;
+        } else {
+            System.out.println("Movimiento no válido, la casilla está ocupada o fuera de rango. Intenta de nuevo.");
+            continue;
+        }
+
+        // Verifico si hay un ganador
+        if ((tablero[0][0] == jugadorHumano && tablero[0][1] == jugadorHumano && tablero[0][2] == jugadorHumano) || // Fila 1
+                (tablero[1][0] == jugadorHumano && tablero[1][1] == jugadorHumano && tablero[1][2] == jugadorHumano) || // Fila 2
+                (tablero[2][0] == jugadorHumano && tablero[2][1] == jugadorHumano && tablero[2][2] == jugadorHumano) || // Fila 3
+                (tablero[0][0] == jugadorHumano && tablero[1][0] == jugadorHumano && tablero[2][0] == jugadorHumano) || // Columna 1
+                (tablero[0][1] == jugadorHumano && tablero[1][1] == jugadorHumano && tablero[2][1] == jugadorHumano) || // Columna 2
+                (tablero[0][2] == jugadorHumano && tablero[1][2] == jugadorHumano && tablero[2][2] == jugadorHumano) || // Columna 3
+                (tablero[0][0] == jugadorHumano && tablero[1][1] == jugadorHumano && tablero[2][2] == jugadorHumano) || // Diagonal 1
+                (tablero[0][2] == jugadorHumano && tablero[1][1] == jugadorHumano && tablero[2][0] == jugadorHumano)) {   // Diagonal 2
+            // Imprimir el tablero
+
+            System.out.println("¡El jugador " + jugadorHumano + " ha ganado!");
+            juegoTerminado = true;
+        } else if ((tablero[0][0] == jugadorMaquina && tablero[0][1] == jugadorMaquina && tablero[0][2] == jugadorMaquina) || // Fila 1
+                (tablero[1][0] == jugadorMaquina && tablero[1][1] == jugadorMaquina && tablero[1][2] == jugadorMaquina) || // Fila 2
+                (tablero[2][0] == jugadorMaquina && tablero[2][1] == jugadorMaquina && tablero[2][2] == jugadorMaquina) || // Fila 3
+                (tablero[0][0] == jugadorMaquina && tablero[1][0] == jugadorMaquina && tablero[2][0] == jugadorMaquina) || // Columna 1
+                (tablero[0][1] == jugadorMaquina && tablero[1][1] == jugadorMaquina && tablero[2][1] == jugadorMaquina) || // Columna 2
+                (tablero[0][2] == jugadorMaquina && tablero[1][2] == jugadorMaquina && tablero[2][2] == jugadorMaquina) || // Columna 3
+                (tablero[0][0] == jugadorMaquina && tablero[1][1] == jugadorMaquina && tablero[2][2] == jugadorMaquina) || // Diagonal 1
+                (tablero[0][2] == jugadorMaquina && tablero[1][1] == jugadorMaquina && tablero[2][0] == jugadorMaquina)) {   // Diagonal 2
+            // Imprimir el tablero
+
+            System.out.println("¡La máquina " + jugadorMaquina + " ha ganado!");
+            juegoTerminado = true;
+        } else {
+            // Verificar si el tablero está lleno (empate)
+            boolean empate= true;
+            for (int i = 0; i < 3 && salir == false  ; i++) {
+                for (int j = 0; j < 3 &&  salir == false ; j++) {
+                    if (tablero[i][j] == ' ') {
+                        empate = false;
+                        salir = true ;
+
+                    }
+                }
+                if (!empate)
+                    salir = false;
+            }
+            if (empate) {
+                // Imprimir el tablero
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        System.out.print(tablero[i][j]);
+                        if (j < 2) System.out.print(" | ");
+                    }
+                    System.out.println();
+                    if (i < 2) System.out.println("--+---+--");
+                }
+                System.out.println("¡Empate! El tablero está lleno.");
+                juegoTerminado = true;
+            }
+        }
+        // Turno de la máquina
+        if (!juegoTerminado) {
+            System.out.println("Turno de la máquina " + jugadorMaquina);
+            Random rand = new Random();
+            int filaMaquina, columnaMaquina;
+
+            // Bucle hasta encontrar una casilla vacía
+            do {
+                filaMaquina = rand.nextInt(3);
+                columnaMaquina = rand.nextInt(3);
+            } while (tablero[filaMaquina][columnaMaquina] != ' ');
+            tablero[filaMaquina][columnaMaquina] = jugadorMaquina;
+            System.out.println("La máquina elige la casilla " + (filaMaquina * 3 + columnaMaquina + 1));
+        }if(juegoTerminado) {
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    System.out.print(tablero[i][j]);
+                    if (j < 2) System.out.print(" | ");
+                }
+                System.out.println();
+                if (i < 2) System.out.println("--+---+--");
+            }
+        }
+
+
+        // Cambiar de jugador
+        if (jugadorHumano == 'X') {
+            jugadorMaquina = 'O';
+        } else {
+            jugadorHumano= 'X';
+        }
+    }
+
+
+}
+}

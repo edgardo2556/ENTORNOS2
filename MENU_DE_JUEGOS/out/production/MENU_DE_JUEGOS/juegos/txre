@@ -1,0 +1,92 @@
+package pc;
+import java.util.Scanner;
+public class pc3enraya {
+    public static void main(String[] args) {
+            Scanner scanner = new Scanner(System.in);
+            char[][] tablero = {{' ' , ' ', ' '} ,{ ' ',' ', ' '} , {' ', ' ' ,' '}} ;
+            char jugadorActual = 'X';
+            boolean juegoTerminado = false;
+            boolean salir =false ;
+
+            while (!juegoTerminado) {
+
+                System.out.println();
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        System.out.print(tablero[i][j]);
+                        if (j < 2) System.out.print(" | ");
+                    }
+                    System.out.println();
+                    if (i < 2) System.out.println("--+---+--");
+                }
+
+                // Pedir al jugador que elija una casilla
+                System.out.println("Turno del jugador " + jugadorActual);
+                System.out.print("Elige una casilla entre 1 y 9: ");
+                int eleccion = scanner.nextInt() - 1;
+
+                int fila = eleccion / 3; // el entero es igual a la fila
+                int columna = eleccion % 3; // residuo es igual a la columna
+
+                if (eleccion >= 0 && eleccion < 9 && tablero[fila][columna] == ' ') {
+                    tablero[fila][columna] = jugadorActual;
+                } else {
+                    System.out.println("Movimiento no válido,  Intenta de nuevo.");
+                    continue;
+                }
+
+                // Verificar si hay un ganador
+                if ((tablero[0][0] == jugadorActual && tablero[0][1] == jugadorActual && tablero[0][2] == jugadorActual) || // Fila 1
+                        (tablero[1][0] == jugadorActual && tablero[1][1] == jugadorActual && tablero[1][2] == jugadorActual) || // Fila 2
+                        (tablero[2][0] == jugadorActual && tablero[2][1] == jugadorActual && tablero[2][2] == jugadorActual) || // Fila 3
+                        (tablero[0][0] == jugadorActual && tablero[1][0] == jugadorActual && tablero[2][0] == jugadorActual) || // Columna 1
+                        (tablero[0][1] == jugadorActual && tablero[1][1] == jugadorActual && tablero[2][1] == jugadorActual) || // Columna 2
+                        (tablero[0][2] == jugadorActual && tablero[1][2] == jugadorActual && tablero[2][2] == jugadorActual) || // Columna 3
+                        (tablero[0][0] == jugadorActual && tablero[1][1] == jugadorActual && tablero[2][2] == jugadorActual) || // Diagonal 1
+                        (tablero[0][2] == jugadorActual && tablero[1][1] == jugadorActual && tablero[2][0] == jugadorActual)) { // Diagonal 2
+                    System.out.println("¡El jugador " + jugadorActual + " ha ganado!");
+
+                    System.out.println();
+                    juegoTerminado = true;
+                } else {
+                    // Verificar si el tablero está lleno (empate)
+                    boolean empate = true;
+                    for (int i = 0; i < 3; i++) {
+                        for (int j = 0; j < 3; j++) {
+                            if (tablero[i][j] == ' ') {
+                                empate = false;
+                              salir = true ;
+
+                            }
+                        }
+                    }
+                    if (empate) {
+                        System.out.println("¡Empate! El tablero está lleno.");
+                        juegoTerminado = true;
+                    }
+                }
+
+
+
+                // Cambiar de jugador
+                if (jugadorActual == 'X') {
+                    jugadorActual = 'O';
+                } else {
+                    jugadorActual = 'X';
+                }
+            }
+
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.print(tablero[i][j]);
+                if (j < 2) System.out.print(" | ");
+            }
+            System.out.println();
+            if (i < 2) System.out.println("--+---+--");
+        }
+
+
+        }
+    }
+
